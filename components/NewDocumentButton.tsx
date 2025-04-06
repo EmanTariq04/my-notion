@@ -1,8 +1,9 @@
 "use client"
 
 import { Button } from "./ui/button"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useTransition } from "react"
+import { createNewDocument } from "@/actions/actions"
 
 function NewDocumentButton() {
   const [isPending, startTransition] = useTransition()
