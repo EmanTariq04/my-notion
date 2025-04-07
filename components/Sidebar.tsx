@@ -14,7 +14,7 @@ import { useCollection } from "react-firebase-hooks/firestore"
 import { collectionGroup, DocumentData, query, where } from "firebase/firestore"
 import { useUser } from "@clerk/nextjs"
 import { db } from "@/firebase"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface RoomDocument extends DocumentData {
   createdAt: string;
@@ -25,7 +25,14 @@ interface RoomDocument extends DocumentData {
 
 
 function Sidebar() {
-  const {user} = useUser()
+  const { user } = useUser()
+  const [groupedData, setGroupedData] = useState<{
+    owner: RoomDocument[];
+    editor: RoomDocument[]
+  }>({
+    owner: [],
+    editor: [] //starting value is empty rooms for both owner and editor
+  })
 
   const [data, loading, error] = useCollection(
     user && (
@@ -39,33 +46,70 @@ function Sidebar() {
     const grouped = data.docs.reduce<{
       owner: RoomDocument[];
       editor: RoomDocument[]
-    }>
+    }>(
+      (acc, curr) => {
+        const roomData = curr.data() as RoomDocument;
+
+        if (roomData.role === "owner") {
+          acc.owner.push({
+            id: curr.id,
+            ...roomData,
+          })
+        } else {
+          acc.editor.push({
+            id: curr.id,
+            ...roomData
+          })
+        }
+        return acc
+      }, {
+      owner: [],
+      editor: []
+    }
+    )
+
+    console.log("grouped data:", grouped)
+
+    setGroupedData(grouped)
   }, [data])
 
   const menuOptions = (
     <>
-    <NewDocumentButton/>
+      <NewDocumentButton />
+      <div className="flex py-4 flex-col space-y-4 md:max-w-36">
+      {groupedData.owner.length === 0 ? (
+        <h2 className="text-gray-500 font-semibold text-sm">No documents found</h2>
+      ) : (
+        <>
+          <h2 className="text-gray-500 font-semibold text-sm">My Documents</h2>
+          {groupedData.owner.map((doc) => (
+            <p key={doc.id}>{doc.roomId}</p>
+            // <SidebarOption key={doc.id} id={doc.id} href={`/doc/${doc.id}`}/>
+          ))} 
+        </>
+      )}
+      </div>
     </>
-  ) 
+  )
 
   return (
     <div className="p-2 md:p-5 bg-gray-200 relative">
 
-     <div className="md:hidden">
-     <Sheet>
-        <SheetTrigger>
-          <MenuIcon className="p-2 hover:opacity-30 rounded-lg" size={40}/>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
-            <div>
-              {menuOptions}
-            </div>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-     </div>
+      <div className="md:hidden">
+        <Sheet>
+          <SheetTrigger>
+            <MenuIcon className="p-2 hover:opacity-30 rounded-lg" size={40} />
+          </SheetTrigger>
+          <SheetContent side="left">
+            <SheetHeader>
+              <SheetTitle>Menu</SheetTitle>
+              <div>
+                {menuOptions}
+              </div>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      </div>
 
       <div className="hidden md:inline">
         <NewDocumentButton />
