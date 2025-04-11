@@ -12,7 +12,7 @@ function Document({ id }: { id: string }) {
         <div>
             <div>
                 <form>
-                    {/* update title */}
+                    update title
                     <Input value={input} onChange={(e) => setInput(e.target.value)} />
                     {/* if */}
                     {/* isOwner + invite + deleteDocument */}
