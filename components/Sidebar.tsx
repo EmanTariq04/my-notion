@@ -121,7 +121,8 @@ function Sidebar() {
       </div>
 
       <div className="hidden md:inline">
-        <NewDocumentButton />
+        {/* <NewDocumentButton /> */}
+        {menuOptions}
       </div>
 
     </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { Link } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { db } from "@/firebase";
