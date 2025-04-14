@@ -8,6 +8,7 @@ import { db } from "@/firebase"
 import { useDocumentData } from "react-firebase-hooks/firestore"
 
 
+
 function Document({ id }: { id: string }) {
     const [data, loading, error] = useDocumentData(doc(db, "documents", id));
     const [input, setInput] = useState("")
