@@ -66,8 +66,9 @@ function FollowPointer({
             }}
             className="px-2 py-2 bg-neutral-200 text-black font-bold whitespace-nowrap min-w-max text-xs rounded-full"
             >
-                {info.name} || {info.email}
-                <img src={info.avatar} alt="avatar" className="h-8 w-8 rounded-full" />
+                {/* {info.name} || {info.email} */}
+                {info.name}
+                {/* <img src={info.avatar} alt="avatar" className="h-8 w-8 rounded-full" /> */}
             </motion.div>
 
         </motion.div>
