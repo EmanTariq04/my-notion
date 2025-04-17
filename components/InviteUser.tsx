@@ -15,56 +15,59 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { deleteDocument } from "@/actions/actions";
 import { toast } from "sonner";
+import { Input } from "./ui/input";
 
-function DeleteDocument() {
+function InviteUser() {
   const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState("");
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
-  const router = useRouter()
+  const router = useRouter();
 
   const handleDelete = async () => {
     const roomId = pathname.split("/").pop();
     if (!roomId) return;
 
     startTransition(async () => {
-      const { success } = await deleteDocument(roomId)
+      const { success } = await deleteDocument(roomId);
 
       if (success) {
         setIsOpen(false);
-        router.replace("/")
-        toast.success("Room Deleted Successfully")
+        router.replace("/");
+        toast.success("Room Deleted Successfully");
       } else {
-        toast.error("Failed to delete room")
+        toast.error("Failed to delete room");
       }
-    })
-
-
+    });
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <Button asChild variant="destructive">
-        <DialogTrigger>Delete</DialogTrigger>
+      <Button asChild variant="outline">
+        <DialogTrigger>Invite</DialogTrigger>
       </Button>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you sure you want to Delete?</DialogTitle>
+          <DialogTitle>Invite a User to collaborate!</DialogTitle>
           <DialogDescription>
-            This will delete the document and all its contents, removing all users from the document.
+            Enter the email of the user you want to invite.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-end gap-2">
-          <Button type="button" onClick={handleDelete} variant="destructive" disabled={isPending}>
-         {isPending ? "Deleting..." : "Delete"}
+
+        <form>
+          <Input
+            type="email"
+            placeholder="Email"
+            className="w-full"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Button type="submit" disabled={!email || isPending}>
+            {isPending ? "Inviting..." : "Invite"}
           </Button>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
 }
-export default DeleteDocument;
+export default InviteUser;

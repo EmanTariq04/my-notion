@@ -17,19 +17,19 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <body>
-        <Header/>
-        <div className="flex min-h-screen">
-          <Sidebar/>
-          <div className="flex-1 p-4 bg-gray-100 overflow-y-auto scrollbar-hide">
-          {children}
+      <html lang="en">
+        <body>
+          <Header />
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <div className="flex-1 p-4 bg-gray-100 overflow-y-auto scrollbar-hide">
+              {children}
+            </div>
           </div>
-        </div>
 
-        <Toaster position="top-center"/>
-      </body>
-    </html>
+          <Toaster position="top-center" />
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
