@@ -19,7 +19,7 @@ type EditorProps = {
     doc: Y.Doc;
     provider: any;
     darkMode: boolean;
-} 
+}
 
 function BlockNote({ doc, provider, darkMode }: EditorProps) {
     const userInfo = useSelf((me) => me.info);
@@ -27,7 +27,7 @@ function BlockNote({ doc, provider, darkMode }: EditorProps) {
     const editor: BlockNoteEditor = useCreateBlockNote({
         collaboration: {
             provider,
-            fragment: doc.getXmlFragment("document-store"),
+            fragment: doc.getXmlFragment("document-store"), //everyone writes in the same document
             user: {
                 name: userInfo?.name,
                 color: stringToColor(userInfo?.email)
@@ -35,33 +35,29 @@ function BlockNote({ doc, provider, darkMode }: EditorProps) {
         },
     });
 
-  return (
-    <div className="relative max-w-6xl mx-auto">
-        <BlockNoteView 
-        className="min-h-screen"
-        editor={editor}
-        theme={
-            darkMode ? "dark" : "light"
-        }/>
-    </div>
-  )
+    return (
+        <div className="relative max-w-6xl mx-auto">
+            <BlockNoteView
+                className="min-h-screen"
+                editor={editor}
+                theme={
+                    darkMode ? "dark" : "light"
+                } />
+        </div>
+    )
 }
+
 function Editor() {
     const room = useRoom();
     const [doc, setDoc] = useState<Y.Doc>();
-    const [provider, setProvider] = useState<LiveblocksYjsProvider>();
+    const [provider, setProvider] = useState<LiveblocksYjsProvider>(); // connects the same room to different users so changes are shared 
     const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
-        const yDoc = new Y.Doc();
-        const yProvider = new LiveblocksYjsProvider(room, yDoc)
+        const yDoc = new Y.Doc(); //making new yjs document for a particular room
+        const yProvider = new LiveblocksYjsProvider(room, yDoc)//providing the room id to the yjs document so that it can be shared with other users in the same room 
         setDoc(yDoc)
         setProvider(yProvider)
-
-        // yProvider.on("synced", () => {
-        //     setDoc(yDoc);
-        //     setProvider(yProvider);
-        //   });
 
         return () => {
             yDoc?.destroy()
