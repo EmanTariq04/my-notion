@@ -7,6 +7,7 @@ import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/firebase"
 import { useDocumentData } from "react-firebase-hooks/firestore"
 import Editor from "./Editor"
+import RoomProvider from "./RoomProvider"
 
 
 
@@ -37,7 +38,7 @@ function Document({ id }: { id: string }) {
 
 
     return (
-        <div>
+        <div className="flex-1 h-full bg-white p-5">
             <div className="flex max-w-6xl mx-auto justify-between pb-5">
                 <form className="flex flex-1 space-x-2" onSubmit={updateTitle}>
                     {/* update title */}
@@ -57,7 +58,7 @@ function Document({ id }: { id: string }) {
             </div>
 
             <hr className="pb-10"/>
-
+            
             <Editor/>
 
             {/* Collaberative editor  */}

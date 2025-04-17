@@ -1,6 +1,7 @@
 "use client";
 
-import { useRoom, useSelf } from "@liveblocks/react";
+import { useRoom } from "@liveblocks/react";
+import { useSelf } from "@liveblocks/react/suspense";
 import { useState, useEffect } from "react";
 import * as Y from "yjs";
 import { LiveblocksYjsProvider } from "@Liveblocks/yjs";
@@ -10,7 +11,8 @@ import { BlockNoteView } from "@blocknote/shadcn";
 import { BlockNoteEditor } from "@blocknote/core";
 import { useCreateBlockNote } from "@blocknote/react";
 import "@blocknote/core/fonts/inter.css"
-import "@blocknote/shadcn/styles.css"
+// import "@blocknote/shadcn/styles.css"
+import "@blocknote/core/style.css";
 import stringToColor from "@/lib/stringToColor";
 
 type EditorProps = {
@@ -29,12 +31,12 @@ function BlockNote({ doc, provider, darkMode }: EditorProps) {
             user: {
                 name: userInfo?.name,
                 color: stringToColor(userInfo?.email)
-            }
-        }
-    })
+            },
+        },
+    });
 
   return (
-    <div>
+    <div className="relative max-w-6xl mx-auto">
         <BlockNoteView 
         className="min-h-screen"
         editor={editor}
@@ -55,6 +57,11 @@ function Editor() {
         const yProvider = new LiveblocksYjsProvider(room, yDoc)
         setDoc(yDoc)
         setProvider(yProvider)
+
+        // yProvider.on("synced", () => {
+        //     setDoc(yDoc);
+        //     setProvider(yProvider);
+        //   });
 
         return () => {
             yDoc?.destroy()
