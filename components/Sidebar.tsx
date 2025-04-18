@@ -82,13 +82,12 @@ function Sidebar() {
           <h2 className="text-gray-500 font-semibold text-sm">No documents found</h2>
         ) : (
           <>
-            <h2 className="text-gray-500 font-semibold text-sm">My Documents</h2>
+            <h2 className="mx-auto text-gray-500 font-semibold text-sm">My Documents</h2>
             {groupedData.owner.map((doc) => (
               <SidebarOption key={doc.id} id={doc.id} href={`/doc/${doc.id}`}/>
             ))}
           </>
         )}
-      </div>
 
       {groupedData.editor.length > 0 && (
         <>
@@ -98,6 +97,7 @@ function Sidebar() {
         ))}
         </>
       )}
+      </div>
     </>
   )
 
@@ -111,7 +111,7 @@ function Sidebar() {
           </SheetTrigger>
           <SheetContent side="left">
             <SheetHeader>
-              <SheetTitle>Menu</SheetTitle>
+              <SheetTitle className="mx-auto">Menu</SheetTitle>
               <div>
                 {menuOptions}
               </div>

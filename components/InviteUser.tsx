@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, FormEvent } from "react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { usePathname, useRouter } from "next/navigation";
-import { deleteDocument } from "@/actions/actions";
+import { InviteUserToDocument } from "@/actions/actions";
 import { toast } from "sonner";
 import { Input } from "./ui/input";
 
@@ -24,19 +24,21 @@ function InviteUser() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleDelete = async () => {
+  const handleInvite = async (e: FormEvent) => {
+    e.preventDefault();
+
     const roomId = pathname.split("/").pop();
     if (!roomId) return;
 
     startTransition(async () => {
-      const { success } = await deleteDocument(roomId);
+      const { success } = await InviteUserToDocument(roomId, email);
 
       if (success) {
         setIsOpen(false);
-        router.replace("/");
-        toast.success("Room Deleted Successfully");
+        setEmail("");
+        toast.success("User added to room successfully");
       } else {
-        toast.error("Failed to delete room");
+        toast.error("Failed to add user to room");
       }
     });
   };
@@ -54,7 +56,7 @@ function InviteUser() {
           </DialogDescription>
         </DialogHeader>
 
-        <form>
+        <form className="flex gap-2" onSubmit={handleInvite}>
           <Input
             type="email"
             placeholder="Email"
