@@ -29,10 +29,7 @@ function Avatars() {
                 </Avatar>
               </TooltipTrigger>
               <TooltipContent>
-              <Avatar className="border-2 hover:z-50">
-                  <AvatarImage src={other?.info.avatar} alt={other?.info?.name} />
-                  <AvatarFallback>{other?.info.name}</AvatarFallback>
-                </Avatar>
+              <p>{self?.id === other?.id ? "You" : other?.info.name}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

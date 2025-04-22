@@ -14,6 +14,7 @@ import "@blocknote/core/fonts/inter.css"
 // import "@blocknote/shadcn/styles.css"
 import "@blocknote/core/style.css";
 import stringToColor from "@/lib/stringToColor";
+import TranslateDocument from "./TranslateDocument";
 
 type EditorProps = {
     doc: Y.Doc;
@@ -75,7 +76,7 @@ function Editor() {
     return (
         <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-2 justify-end mb-10">
-                {/* translate with ai */}
+                <TranslateDocument doc={doc} />
                 {/* chat to doc with ai  */}
 
                 {/* dark mode  */}
