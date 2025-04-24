@@ -61,7 +61,7 @@ function TranslateDocument({ doc }: { doc: Y.Doc }) {
     e.preventDefault();
 
     startTransition(async () => {
-      const documentData = doc.getText("document-store").toJSON();
+      const documentData = doc.get("document-store").toJSON();
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/translateDocument`,
@@ -109,11 +109,11 @@ function TranslateDocument({ doc }: { doc: Y.Doc }) {
           <div className="flex flex-col items-start max-h-96 overflow-y-scroll gap-2 p-5 bg-gray-100">
             <div className="flex">
               <BotIcon className="w-10 flex-shrink-0"/>
-              <p>
+              <p className="font-bold">
                 GPT {isPending ? "is thinking..." : "Says:"}
               </p>
             </div>
-            <p>{isPending ? "Thinking..." : <Markdown>{summary}</Markdown>}</p>
+            <div>{isPending ? "Thinking..." : <Markdown>{summary}</Markdown>}</div>
           </div>
         )}
 
